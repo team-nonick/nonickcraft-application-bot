@@ -1,9 +1,11 @@
+// token,guildId,clientId,modch,requestchはconfig.jsonに保存すること
 const fs = require('node:fs');
 const { Client, Collection, Intents } = require('discord.js');
 const { token } = require('./config.json');
 
 const client = new Client({ intents: [Intents.FLAGS.GUILDS] });
 
+// ready nouniku!!()
 client.once('ready', () => {
 	console.log('Ready nouniku!!');
 	client.user.setActivity(`DiscordBot-NoNickCraft`);
@@ -17,6 +19,7 @@ for (const file of commandFiles) {
 	client.commands.set(command.data.name, command);
 }
 
+// コマンド処理
 client.on('interactionCreate', async interaction => {
 	if (!interaction.isCommand()) return;
 

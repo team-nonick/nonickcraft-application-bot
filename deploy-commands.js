@@ -1,3 +1,6 @@
+// commandsフォルダに追加したコマンドを登録するために使われる
+// コマンド更新の際に一回だけ使用すること(複数回やっても意味がない)
+
 const fs = require('node:fs');
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const { REST } = require('@discordjs/rest');
