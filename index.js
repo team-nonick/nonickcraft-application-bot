@@ -6,6 +6,7 @@ const client = new Client({ intents: [Intents.FLAGS.GUILDS] });
 
 client.once('ready', () => {
 	console.log('Ready nouniku!!');
+	client.user.setActivity(`DiscordBot-NoNickCraft`);
 });
 
 client.commands = new Collection();
