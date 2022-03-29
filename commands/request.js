@@ -29,7 +29,7 @@ module.exports = {
 		const userId = interaction.user.id;
 		const userAvater = interaction.user.displayAvatarURL();
 		// コマンドを打ったチャンネルのIDを取得
-		const sendCh = interaction.channnelId
+		const sendCh = interaction.channelId
 
 		if (sendCh === requestCh) {
 			// 申請側にメッセージを送信
@@ -45,13 +45,21 @@ module.exports = {
 			await interaction.reply({ embeds: [embed] });
 
 			// MODチャンネル側にメッセージを送信
-			const row = new MessageActionRow()
+			const buttom_copy = new MessageActionRow()
 				.addComponents(
 					new MessageButton()
-						.setCustomId('hail')
-						.setLabel('( ᐛ )')
+						.setCustomId('buttom_copy')
+						.setLabel('コマンドをコピー')
+						.setEmoji('📃')
 						.setStyle('PRIMARY'),
 				);
+
+			const buttom_url = new MessageActionRow()
+				.addComponents(
+					new MessageButton()
+
+				);
+				
 			const embed_mod = new MessageEmbed()
 				.setColor('#56B482')
 				.setTitle('新しい申請が送信されました!')
@@ -61,7 +69,7 @@ module.exports = {
 					{ name: 'エディション', value: `${edition}版`, inline: true },	
 					{ name: 'MCID', value: `${mcid}`, inline: true }
 				);
-			await interaction.guild.channels.cache.get(modCh).send({ embeds: [embed_mod], components: [row] });
+			await interaction.guild.channels.cache.get(modCh).send({ embeds: [embed_mod], components: [buttom_copy, buttom_url] });
 		} else {
 			// もし申請チャンネル以外で送っていた場合にエラーを表示
 			const embed_error = new MessageEmbed()
