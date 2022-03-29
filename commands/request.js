@@ -1,4 +1,5 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
+const { MessageEmbed } = require('discord.js');
 /* const { requestch, modch } = require('../config.json'); */
 
 module.exports = {
@@ -18,6 +19,14 @@ module.exports = {
 	async execute(interaction) {
 		const edition = interaction.options.getString('edition');
 		const mcid = interaction.options.getString('mcid');
-		await interaction.reply(`${mcid},準備中だよ`);
+		const embed = new MessageEmbed()
+			.setColor(`#5662F6`)
+			.setTitle('申請完了')
+			.setDescription('以下の情報で申請を送信しました。\n__Tips:登録には時間がかかる場合があります。__')
+			.addFields(
+				{ name: 'エディション', value: `${edition}版`, inline: true },	
+				{ name: 'ID', value: `${mcid}`, inline: true }
+			)
+		await interaction.reply({ embeds: [embed] });
 	},
 }; 
