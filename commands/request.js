@@ -45,29 +45,25 @@ module.exports = {
 			await interaction.reply({ embeds: [embed] });
 
 			// MODチャンネル側にメッセージを送信
-			const buttom_copy = new MessageActionRow()
+			const buttons = new MessageActionRow()
 				.addComponents(
 					new MessageButton()
-						.setCustomId('buttom_copy')
-						.setLabel('コマンドをコピー')
-						.setEmoji('📃')
-						.setStyle('PRIMARY'),
-				);
-
-			const buttom_ok = new MessageActionRow()
+					.setCustomId('button_copy')
+					.setLabel('コマンドをコピー')
+					.setEmoji('📃')
+					.setStyle('PRIMARY'),
+				)
 				.addComponents(
 					new MessageButton()
-						.setCustomId('buttom_ok')
-						.setLabel('許可')
-						.setStyle('SUCCESS'),
-				);
-			
-			const buttom_ng = new MessageActionRow()
+					.setCustomId('button_ok')
+					.setLabel('許可')
+					.setStyle('SUCCESS'),
+				)
 				.addComponents(
 					new MessageButton()
-						.setCustomId('buttom_ng')
-						.setLabel('拒否')
-						.setStyle('DANGER'),
+					.setCustomId('button_ng')
+					.setLabel('拒否')
+					.setStyle('DANGER'),
 				);
 				
 			const embed_mod = new MessageEmbed()
@@ -79,7 +75,7 @@ module.exports = {
 					{ name: 'エディション', value: `${edition}版`, inline: true },	
 					{ name: 'MCID', value: `${mcid}`, inline: true }
 				);
-			await interaction.guild.channels.cache.get(modCh).send({ embeds: [embed_mod], components: [buttom_copy, buttom_ok, buttom_ng] });
+			await interaction.guild.channels.cache.get(modCh).send({ embeds: [embed_mod], components: [buttons] });
 		} else {
 			// もし申請チャンネル以外で送っていた場合にエラーを表示
 			const embed_error = new MessageEmbed()
