@@ -21,17 +21,31 @@ for (const file of commandFiles) {
 
 // コマンド処理
 client.on('interactionCreate', async interaction => {
-	if (!interaction.isCommand()) return;
+	if (interaction.isCommand()) {
+		const command = client.commands.get(interaction.commandName);
 
-	const command = client.commands.get(interaction.commandName);
+		if (!command) return;
 
-	if (!command) return;
-
-	try {
-		await command.execute(interaction);
-	} catch (error) {
-		console.error(error);
-		await interaction.reply({ content: 'コマンドの実行中にエラーが発生しました。', ephemeral: true });
+		try {
+			await command.execute(interaction);
+		} catch (error) {
+			console.error(error);
+			await interaction.reply({ content: 'コマンドの実行中にエラーが発生しました。', ephemeral: true });
+		}
+	}
+	if (interaction.isButton()) {
+		if (interaction.customId == "button_copy") {
+			const embed = interaction.message.embeds?.[0]?.fields;
+			if (!embed) return;
+			const edition = embed[0].value;
+			const mcid = embed[1].value;
+			if (edition == "BE版") {
+				interaction.reply({ content: `/whitelist add .${mcid}`, ephemeral: true });
+			}
+			else {
+				interaction.reply({ content: `/whitelist add ${mcid}`, ephemeral: true });
+			}
+		}
 	}
 });
 

@@ -45,6 +45,7 @@ module.exports = {
 			await interaction.reply({ embeds: [embed] });
 
 			// MODチャンネル側にメッセージを送信
+			//ボタン
 			const buttons = new MessageActionRow()
 				.addComponents(
 					new MessageButton()
@@ -65,7 +66,8 @@ module.exports = {
 					.setLabel('拒否')
 					.setStyle('DANGER'),
 				);
-				
+			
+			//埋め込み
 			const embed_mod = new MessageEmbed()
 				.setColor('#56B482')
 				.setTitle('新しい申請が送信されました!')
