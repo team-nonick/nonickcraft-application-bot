@@ -1,6 +1,6 @@
 // token,guildId,clientId,modch,requestchはconfig.jsonに保存すること
 const fs = require('node:fs');
-const { Client, Collection, Intents, MessageEmbed, GuildMember, MessageActionRow, MessageButton } = require('discord.js');
+const { Client, Collection, Intents, MessageEmbed, GuildMember, MessageActionRow, MessageButton, MessageSelectMenu } = require('discord.js');
 const { token, beplayerprefix, playerrole } = require('./config.json');
 
 const client = new Client({ intents: [Intents.FLAGS.GUILDS] });
@@ -59,7 +59,6 @@ client.on('interactionCreate', async interaction => {
 			const edition = embed[1].value;
 			const mcid = embed[2].value;
 			const user = await client.users.fetch(`${requestId}`);
-			//const user_guild = await GuildMember.fetch(`${requestId}`);
 			// 埋め込み自体の情報を取得
 			const beforeembed = interaction.message;
 			// ボタンを押した人の情報を取得
@@ -86,10 +85,10 @@ client.on('interactionCreate', async interaction => {
 				);
 
 			//	世界一無駄な二度手間 (修正予定)
-			interaction.reply({ content: `<@${requestId}>の申請を許可しました`, ephemeral: true });
-			user.send({ content: `**NoNICK's SERVERへようこそ!**\nこんにちは! NoNICK's SERVERへの申請が承認され、サーバーに参加できるようになったことをお知らせします！\n早速サーバーに参加して楽しもう!\n**注意:このメッセージを受け取ってから12時間以内に参加しないと、もう一回申請が必要になります!**\n\n**申請が承認されたID:** ${mcid} (${edition})\n\n**Tips:**サーバーに関する質問は、このBOTに送っても対応できません! Discordサーバーの質問チャンネルや、のにクラchatなどで皆さんに質問しましょう!`, files: ['./img/info.png'] });
-			//user_guild.roles.add(playerrole);
-			beforeembed.edit({ embeds: [afterembed], components: [after_button] });
+			await interaction.reply({ content: `<@${requestId}>の申請を許可しました`, ephemeral: true });
+			await user.send({ content: `**NoNICK's SERVERへようこそ!**\nこんにちは! NoNICK's SERVERへの申請が承認され、サーバーに参加できるようになったことをお知らせします！\n早速サーバーに参加して楽しもう!\n**注意:このメッセージを受け取ってから12時間以内に参加しないと、もう一回申請が必要になります!**\n\n**申請が承認されたID:** ${mcid} (${edition})\n\n**Tips:**サーバーに関する質問は、このBOTに送っても対応できません! Discordサーバーの質問チャンネルや、のにクラchatなどで皆さんに質問しましょう!`, files: ['./img/info.png'] });
+			//user_guild.member.roles.add(playerrole);
+			await beforeembed.edit({ embeds: [afterembed], components: [after_button] });
 		}
 
 		if (interaction.customId == "button_copy-copy") {
@@ -98,6 +97,34 @@ client.on('interactionCreate', async interaction => {
 			const mcid = embed[1].value;
 			interaction.reply({ content: `${mcid}`, ephemeral: true });
 
+		}
+
+		if (interaction.customId == "button_ng") {
+			const select = new MessageActionRow()
+				.addComponents(
+					new MessageSelectMenu()
+						.setCustomId('select')
+						.setPlaceholder('ここから選択')
+						.addOptions([
+							{
+								label: '直近半年間に不正が発覚している',
+								description: 'Minecraftのみならず、ゲーム全般にてハック等の不正全般を指します。',
+								value: 'reason_one',
+							},
+							{
+								label: '他Minecraftサーバーで荒らしの経験がある',
+								description: '荒らしはやめなさい',
+								value: 'reason_two',
+							},
+							{
+								label: 'レベルの上げ方が適切ではない',
+								description: '半ばスパムや関係ないメッセージを送信してレベルを上げている。',
+								value: 'reason_three',
+							},
+
+						]),
+				);
+			await interaction.reply({ content: '申請を拒否する理由に最も当てはまるものを選択してください。', components: [select], ephemeral: true });
 		}
 	}
 });
