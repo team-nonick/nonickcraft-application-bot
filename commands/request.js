@@ -1,5 +1,6 @@
 // リクエストコマンド
 // エディションとMCIDを取得させ、申請を申請側とMODチャンネル側に送信する。
+
 const { SlashCommandBuilder, channelMention } = require('@discordjs/builders');
 const { MessageEmbed, MessageActionRow, MessageButton } = require('discord.js');
 const { requestCh, modCh } = require('../config.json');
@@ -27,7 +28,7 @@ module.exports = {
 		const mcid = interaction.options.getString('mcid');
 		// コマンドを打った人の情報を取得
 		const userId = interaction.user.id;
-		const userAvater = interaction.user.displayAvatarURL();
+		const userAvater = interaction.user.avatarURL();
 		// コマンドを打ったチャンネルのIDを取得
 		const sendCh = interaction.channelId
 
@@ -70,7 +71,7 @@ module.exports = {
 			//埋め込み
 			const embed_mod = new MessageEmbed()
 				.setColor('#56B482')
-				.setTitle('新しい申請が送信されました!')
+				.setTitle('申請 - 新しい申請が送信されました!')
 				.setDescription(`申請者:<@${userId}>`)
 				.setThumbnail(userAvater)
 				.addFields(
