@@ -2,7 +2,7 @@
 const fs = require('node:fs');
 const { Client, Collection, Intents, MessageEmbed, GuildMember, MessageActionRow, MessageButton, MessageSelectMenu } = require('discord.js');
 const { token, beplayerprefix, playerrole } = require('./config.json');
-
+const reason = require('./reason.json');
 const client = new Client({ intents: [Intents.FLAGS.GUILDS] });
 
 // ready nouniku!!()
@@ -85,7 +85,6 @@ client.on('interactionCreate', async interaction => {
 					{ name: '申請を対応した人', value: `<@${clickuserId}>` }
 				);
 
-			//	世界一無駄な二度手間 (修正予定)
 			await interaction.reply({ content: `<@${requestId}>の申請を許可しました`, ephemeral: true });
 			member.roles.add(playerrole);
 
@@ -98,7 +97,7 @@ client.on('interactionCreate', async interaction => {
 				 .addField(`申請が承認されたID`, `${mcid} (${edition})`)
 				 .addField(`Tips`, `サーバーに関する質問は、このBOTに送っても対応できません! Discordサーバーの質問チャンネルや、のにクラchatなどで皆さんに質問しましょう!`)
 				 .setImage('https://cdn.discordapp.com/attachments/908993379566747659/958745736852435014/info.png');
-				 member.user.send({embeds: [dm]});
+			member.user.send({embeds: [dm]});
 			await beforeembed.edit({ embeds: [afterembed], components: [after_button] });
 		}
 
@@ -110,31 +109,90 @@ client.on('interactionCreate', async interaction => {
 		}
 
 		if (interaction.customId == "button_ng") {
+			const embed = interaction.message.embeds?.[0]?.fields;
+			if (!embed) return;
 			const select = new MessageActionRow()
 				.addComponents(
 					new MessageSelectMenu()
-						.setCustomId('select')
+						.setCustomId('reason_select')
 						.setPlaceholder('ここから選択')
 						.addOptions([
 							{
-								label: '直近半年間に不正が発覚している',
-								description: 'Minecraftのみならず、ゲーム全般にてハック等の不正全般を指します。',
+								label: '直近半年間の不正ツールの使用',
+								description: 'ゲーム全般のハック等の不正全般を指します。',
 								value: 'reason_one',
 							},
 							{
-								label: '他Minecraftサーバーで荒らしの経験がある',
-								description: '荒らしはやめなさい',
+								label: '直近一年間の他サーバーでの荒らし行為',
 								value: 'reason_two',
 							},
 							{
-								label: 'レベルの上げ方が適切ではない',
-								description: '半ばスパムや関係ないメッセージを送信してレベルを上げている。',
+								label: 'レベルの上げ方が不適切である',
+								description: 'スパムや関係ないメッセージを送信してレベルを上げている。',
 								value: 'reason_three',
 							},
-
+							{
+								label: 'Discordサーバーのルールが守れていない',
+								value: 'reason_four',
+							},
+							// 機能が実装されたら消す
+							{
+								label: '既にそのIDが登録されている',
+								value: 'reason_five',
+							},
+							{
+								label: 'その他',
+								value: 'reason_six',
+							}
 						]),
 				);
-			await interaction.reply({ content: '申請を拒否する理由に最も当てはまるものを選択してください。', components: [select], ephemeral: true });
+			const copy_embed = new MessageEmbed()
+					.setTitle(`元のメッセージ`)
+					.addFields({ name: 'ユーザーID', value: `${embed[0].value}` },
+								{ name: 'エディション', value: `${embed[1].value}版`, inline: true },	
+								{ name: 'MCID', value: `${embed[2].value}`, inline: true },
+								{ name: '元のメッセージのID', value: `${interaction.message.id}` })
+			await interaction.reply({ content: '申請を拒否する理由に最も当てはまるものを選択してください。', components: [select], embeds: [copy_embed] ,ephemeral: true });
+		}
+	}
+	if (interaction.isSelectMenu()) {
+		if (interaction.customId === 'reason_select') {
+			console.log('nouniku ugoiteru!!!!')
+			// 埋め込みから申請者の情報を取得
+			const embed = interaction.message.embeds?.[0]?.fields;
+			if (!embed) return;
+			const requestId = embed[0].value;
+			const edition = embed[1].value;
+			const mcid = embed[2].value;
+			const message = await interaction.channel.messages.fetch(embed[3].value);
+			const user = await client.users.fetch(requestId);
+			// ボタンを押した人の情報を取得
+			const clickuserId = interaction.user.id;
+			const reason_send =  interaction.values.map(v => reason[v]);
+			const afterembed = new MessageEmbed()
+				.setColor('#F61E29')
+				.setTitle('申請 - 却下済み')
+				.addFields(
+					{ name: '申請者', value: `<@${requestId}>`, inline: true },
+					{ name: 'MCID', value: `${mcid} (${edition})`, inline: true },	
+					{ name: '申請を対応した人', value: `<@${clickuserId}>` }
+				);
+			const dm = new MessageEmbed()
+				.setColor('#F61E29')
+				.setTitle(`NoNICK'sSERVERからのお知らせ`)
+				.setDescription(`こんにちは! 今回はNoNICK'sSERVERに申請を送っていただき、ありがとうございます!
+				残念ですが、あなたは以下の理由により申請が却下されました。`)
+				.addField('却下されたID', `${mcid} (${edition})`)
+				.addField('理由', `${reason_send.join(',\n')}`)
+				.addField('却下されたらどうすればいいの?',`上記の理由を良く確認していただき、まずは原因の改善を行いましょう。
+				再申請は早くても一週間後から可能となります。
+				それ以前の再申請は無条件に全て却下されます。
+				何か最申請について質問があれば、気軽にDMをよろしくお願いします。`);	
+			console.log('nouniku sarani ugoiteru!!!!')
+			interaction.reply({ content: `<@${requestId}>の申請を却下しました`, ephemeral: true });
+			console.log('nouniku metyakutya ugoiteru!!!!')
+			message.edit({ embeds: [afterembed] , components: []});
+			user.send({embeds: [dm]});				
 		}
 	}
 });
