@@ -23,14 +23,11 @@ module.exports = {
 		),
 
 	async execute(interaction) {
-		// コマンドの値色々
-		const edition = interaction.options.getString('edition');
-		const mcid = interaction.options.getString('mcid');
-		// コマンドを打った人の情報を取得
-		const userId = interaction.user.id;
-		const userAvater = interaction.user.avatarURL();
-		// コマンドを打ったチャンネルのIDを取得
-		const sendCh = interaction.channelId
+		const edition = interaction.options.getString('edition'); //コマンドを打った人のmcid
+		const mcid = interaction.options.getString('mcid'); //コマンドを打った人のmcid
+		const userId = interaction.user.id; //コマンドを打った人のid
+		const userAvater = interaction.user.avatarURL(); //コマンドを打った人のアバターURL
+		const sendCh = interaction.channelId //コマンドを発動したチャンネル
 
 		if (sendCh === requestCh) {
 			// 申請側にメッセージを送信
@@ -38,15 +35,16 @@ module.exports = {
 				.setColor(`#5662F6`)
 				.setTitle('申請完了')
 				.setThumbnail(userAvater)
-				.setDescription('以下の情報で申請を送信しました。\n__Tips:登録には時間がかかる場合があります。__')
+				.setDescription(`以下の情報で申請を送信しました。
+				__Tips:登録には時間がかかる場合があります。__`)
 				.addFields(
-					{ name: 'エディション', value: `${edition}版`, inline: true },	
-					{ name: 'MCID', value: `${mcid}`, inline: true }
+					{name: 'エディション', value: `${edition}版`, inline: true},	
+					{name: 'MCID', value: `${mcid}`, inline: true}
 				);
-			await interaction.reply({ embeds: [embed] });
+			interaction.reply({ embeds: [embed] });
 
-			// MODチャンネル側にメッセージを送信
-			//ボタン
+			// MODチャンネル側に申請対応メッセージを送信
+			//↑につけるボタンボタン
 			const buttons = new MessageActionRow()
 				.addComponents(
 					new MessageButton()
@@ -75,9 +73,9 @@ module.exports = {
 				.setDescription(`申請者:<@${userId}>`)
 				.setThumbnail(userAvater)
 				.addFields(
-					{ name: 'ユーザーID', value: `${userId}` },
-					{ name: 'エディション', value: `${edition}版`, inline: true },	
-					{ name: 'MCID', value: `${mcid}`, inline: true }
+					{name: 'ユーザーID', value: `${userId}` },
+					{name: 'エディション', value: `${edition}版`, inline: true},	
+					{name: 'MCID', value: `${mcid}`, inline: true}
 				);
 			await interaction.guild.channels.cache.get(modCh).send({ embeds: [embed_mod], components: [buttons] });
 		} else {
@@ -85,7 +83,7 @@ module.exports = {
 			const embed_error = new MessageEmbed()
 				.setColor('#E84136')
 				.setDescription(`<#${requestCh}>以外でこのコマンドを使うことはできません!`);
-				await interaction.reply({ embeds: [embed_error], ephemeral: true });
+			interaction.reply({ embeds: [embed_error], ephemeral: true });
 		}
 	},
 }; 
