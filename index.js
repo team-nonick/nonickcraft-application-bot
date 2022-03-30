@@ -35,16 +35,30 @@ client.on('interactionCreate', async interaction => {
 	}
 	if (interaction.isButton()) {
 		if (interaction.customId == "button_copy") {
+			// ホワリス追加コマンドを自動生成
 			const embed = interaction.message.embeds?.[0]?.fields;
 			if (!embed) return;
-			const edition = embed[0].value;
-			const mcid = embed[1].value;
+			const edition = embed[1].value;
+			const mcid = embed[2].value;
 			if (edition == "BE版") {
 				interaction.reply({ content: `/whitelist add .${mcid}`, ephemeral: true });
 			}
 			else {
 				interaction.reply({ content: `/whitelist add ${mcid}`, ephemeral: true });
 			}
+		}
+
+		if (interaction.customId == "button_ok") {
+			// 申請を許可
+			const embed = interaction.message.embeds?.[0]?.fields;
+			if (!embed) return;
+			const requestId = embed[0].value;
+			const edition = embed[1].value;
+			const mcid = embed[2].value;
+			//	世界一無駄な二度手間 (修正予定)
+			interaction.reply({ content: `<@${requestId}>の申請を承認しました`, ephemeral: true });
+			const user = await client.users.fetch(`${requestId}`);
+			user.send({ content: `**NoNICK's SERVERへようこそ!**\nこんにちは! NoNICK's SERVERへの申請が受理され、サーバーに参加できるようになったことをお知らせします！\n早速サーバーに参加して楽しもう!\n**注意:このメッセージを受け取ってから12時間以内に参加しないと、もう一回申請が必要になります!**\n\n**申請が受理されたID:** ${mcid} (${edition})\n\n**Tips:**サーバーに関する質問は、このBOTに送っても対応できません! Discordサーバーの質問チャンネルや、のにクラchatなどで皆さんに質問しましょう!`, files: ['./img/info.png'] });
 		}
 	}
 });

@@ -74,6 +74,7 @@ module.exports = {
 				.setDescription(`申請者:<@${userId}>`)
 				.setThumbnail(userAvater)
 				.addFields(
+					{ name: 'ユーザーID', value: `${userId}` },
 					{ name: 'エディション', value: `${edition}版`, inline: true },	
 					{ name: 'MCID', value: `${mcid}`, inline: true }
 				);
