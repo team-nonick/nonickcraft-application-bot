@@ -58,7 +58,8 @@ client.on('interactionCreate', async interaction => {
 			const requestId = embed[0].value;
 			const edition = embed[1].value;
 			const mcid = embed[2].value;
-			const user = await client.users.fetch(`${requestId}`);
+			// const user = await client.users.fetch(`${requestId}`);
+			const member = await interaction.guild.members.fetch(requestId);
 			// 埋め込み自体の情報を取得
 			const beforeembed = interaction.message;
 			// ボタンを押した人の情報を取得
@@ -86,8 +87,18 @@ client.on('interactionCreate', async interaction => {
 
 			//	世界一無駄な二度手間 (修正予定)
 			await interaction.reply({ content: `<@${requestId}>の申請を許可しました`, ephemeral: true });
-			await user.send({ content: `**NoNICK's SERVERへようこそ!**\nこんにちは! NoNICK's SERVERへの申請が承認され、サーバーに参加できるようになったことをお知らせします！\n早速サーバーに参加して楽しもう!\n**注意:このメッセージを受け取ってから12時間以内に参加しないと、もう一回申請が必要になります!**\n\n**申請が承認されたID:** ${mcid} (${edition})\n\n**Tips:**サーバーに関する質問は、このBOTに送っても対応できません! Discordサーバーの質問チャンネルや、のにクラchatなどで皆さんに質問しましょう!`, files: ['./img/info.png'] });
-			//user_guild.member.roles.add(playerrole);
+			member.roles.add(playerrole);
+
+			const dm = new MessageEmbed()
+				 .setColor('#6B86D1')
+				 .setTitle("NoNICK's SERVERへようこそ!")
+				 .setDescription(`こんにちは! NoNICKNoNICK's SERVERへの申請が承認され、サーバーに参加できるようになったことをお知らせします！
+				 早速サーバーに参加して楽しもう!
+				 **注意:このメッセージを受け取ってから12時間以内に参加しないと、もう一回申請が必要になります!**`)
+				 .addField(`申請が承認されたID`, `${mcid} (${edition})`)
+				 .addField(`Tips`, `サーバーに関する質問は、このBOTに送っても対応できません! Discordサーバーの質問チャンネルや、のにクラchatなどで皆さんに質問しましょう!`)
+				 .setImage('https://cdn.discordapp.com/attachments/908993379566747659/958745736852435014/info.png');
+				 member.user.send({embeds: [dm]});
 			await beforeembed.edit({ embeds: [afterembed], components: [after_button] });
 		}
 
@@ -96,7 +107,6 @@ client.on('interactionCreate', async interaction => {
 			if (!embed) return;
 			const mcid = embed[1].value;
 			interaction.reply({ content: `${mcid}`, ephemeral: true });
-
 		}
 
 		if (interaction.customId == "button_ng") {
