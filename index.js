@@ -2,9 +2,10 @@
 // token,guildId,clientId,modch,requestchはconfig.jsonに保存すること
 const fs = require('node:fs');
 const { Client, Collection, Intents, MessageEmbed, GuildMember, MessageActionRow, MessageButton, MessageSelectMenu } = require('discord.js');
-const { token, beplayerprefix, playerrole } = require('./config.json');
+const { beplayerprefix, playerrole } = require('./config.json');
 const reason = require('./reason.json');
 const client = new Client({ intents: [Intents.FLAGS.GUILDS] });
+require('dotenv').config();
 
 // ready nouniku!!()
 client.once('ready', () => {
@@ -69,17 +70,21 @@ client.on('interactionCreate', async interaction => {
 			const dm = new MessageEmbed() //申請者へ送るDM
 				 .setColor('#6B86D1')
 				 .setTitle("NoNICK's SERVERへようこそ!")
-				 .setDescription(`こんにちは! NoNICKNoNICK's SERVERへの申請が承認され、サーバーに参加できるようになったことをお知らせします！
-				 早速サーバーに参加して楽しもう!
-				 **注意:このメッセージを受け取ってから12時間以内に参加しないと、もう一回申請が必要になります!**`)
+				 .setDescription(`こんにちは! NoNICKNoNICK's SERVERへの申請が承認され、サーバーに参加できるようになったことをお知らせします!\n早速サーバーに参加して楽しもう!\n**注意:このメッセージを受け取ってから12時間以内に参加しないと、もう一回申請が必要になります!**`)
 				 .addField(`申請が承認されたID`, `${mcid} (${edition})`)
 				 .addField(`Tips`, `サーバーに関する質問は、このBOTに送っても対応できません! Discordサーバーの質問チャンネルや、のにクラchatなどで皆さんに質問しましょう!`)
 				 .setImage('https://cdn.discordapp.com/attachments/958791423161954445/958791575515824178/info.png');
-
-			member.user.send({embeds: [dm]});
 			beforeembed.edit({embeds: [afterembed], components: []});
 			member.roles.add(playerrole);
-			interaction.reply({content: `<@${requestId}>の申請を許可しました`, ephemeral: true});
+			try {
+				member.user.send({embeds: [dm]});
+				interaction.reply({content: `<@${requestId}>の申請を許可しました`, ephemeral: true});
+			}
+			catch {
+				console.log('DMの送信にエラーが発生しました。')
+				interaction.reply({ content: `<@${requestId}>の申請を許可しました。\nが、DMでメッセージを送れませんでした。\n別途対応してください。`, ephemeral: true});
+			}
+			
 		}
 
 		if (interaction.customId == "button_ng") {
@@ -159,20 +164,23 @@ client.on('interactionCreate', async interaction => {
 			const dm = new MessageEmbed() //申請者へ送るDM
 				.setColor('#F61E29')
 				.setTitle(`NoNICK'sSERVERからのお知らせ`)
-				.setDescription(`こんにちは! 今回はNoNICK'sSERVERに申請を送っていただき、ありがとうございます!
-				残念ですが、あなたは以下の理由により申請が却下されました。`)
+				.setDescription(`こんにちは! 今回はNoNICK'sSERVERに申請を送っていただき、ありがとうございます!\n残念ですが、あなたは以下の理由により申請が却下されました。`)
 				.addField('却下されたID', `${mcid} (${edition})`)
 				.addField('理由', `${reason_send.join(',\n')}`)
-				.addField('却下されたらどうすればいいの?',`上記の理由を良く確認していただき、まずは原因の改善を行いましょう。
-				再申請は早くても一週間後から可能となります。
-				それ以前の再申請は無条件に全て却下されます。
-				何か最申請について質問があれば、気軽にDMをよろしくお願いします。`)
+				.addField('却下されたらどうすればいいの?',`上記の理由を良く確認していただき、まずは原因の改善を行いましょう。\n再申請は早くても一週間後から可能となります。\nそれ以前の再申請は無条件に全て却下されます。\n何か最申請について質問があれば、気軽にDMをよろしくお願いします。`)
 				.setImage('https://cdn.discordapp.com/attachments/958791423161954445/958791518225854614/2022-01-26_11.png')
-			interaction.reply({ content: `<@${requestId}>の申請を却下しました`, ephemeral: true});
+			
 			message.edit({embeds: [afterembed] , components: []});
-			user.send({embeds: [dm]});
+			try {
+				user.send({embeds: [dm]});
+				interaction.reply({ content: `<@${requestId}>の申請を却下しました`, ephemeral: true});
+			}
+			catch { // 送信者がDMを開放していなかったら
+				console.log('DMの送信にエラーが発生しました。')
+				interaction.reply({ content: `<@${requestId}>の申請を却下しました。\nが、DMでメッセージを送れませんでした。\n別途対応してください。`, ephemeral: true});
+			}
 		}
 	}
 });
 
-client.login(token);
+client.login(process.env.BOT_TOKEN);

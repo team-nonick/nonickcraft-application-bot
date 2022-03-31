@@ -35,8 +35,7 @@ module.exports = {
 				.setColor(`#5662F6`)
 				.setTitle('申請完了')
 				.setThumbnail(userAvater)
-				.setDescription(`以下の情報で申請を送信しました。
-				__Tips:登録には時間がかかる場合があります。__`)
+				.setDescription(`以下の情報で申請を送信しました。\n**Tips:**登録には時間がかかる場合があります。\n__正しく申請を受け取るには、DMを開放しておいてください!__`)
 				.addFields(
 					{name: 'エディション', value: `${edition}版`, inline: true},	
 					{name: 'MCID', value: `${mcid}`, inline: true}
