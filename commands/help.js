@@ -18,7 +18,7 @@ module.exports = {
                 {name: '/help', value: '自身が使用可能なコマンドを確認します。'},
                 {name: '/request', value: `${serverName}への参加申請を送ります。`}
             )
-            .setFooter({text: `v1.0`});
+            .setFooter({text: `v1.1`});
         interaction.reply({embeds: [embed],  ephemeral: true});
 	},
 };
