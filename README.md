@@ -22,6 +22,7 @@ Discord.js v13に追加されたスラッシュコマンドやボタン等を積
 * @discordjs/rest 0.3.0
 * discord-api-types 0.30.0
 * dotenv 16.0.0
+* mongoose@latest
 
 # Installation
 以下のコマンドをコンソールに入力することでライブラリをインストールできます。
