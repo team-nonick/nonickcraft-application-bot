@@ -170,17 +170,12 @@ client.on('interactionCreate', async interaction => {
 				.addField('却下されたらどうすればいいの?',`上記の理由を良く確認していただき、まずは原因の改善を行いましょう。\n再申請は早くても一週間後から可能となります。\nそれ以前の再申請は無条件に全て却下されます。\n何か最申請について質問があれば、気軽にDMをよろしくお願いします。`)
 				.setImage('https://cdn.discordapp.com/attachments/958791423161954445/958791518225854614/2022-01-26_11.png')
 			
+			user.send({embeds: [dm]}).catch(error => {
+				interaction.reply(`DMが送信できませんでした。別途対応をお願いします。`)
+			}) 
 			message.edit({embeds: [afterembed] , components: []});
-			try {
-				user.send({embeds: [dm]});
-				interaction.reply({ content: `<@${requestId}>の申請を却下しました`, ephemeral: true});
-			}
-			catch { // 送信者がDMを開放していなかったら
-				console.log('DMの送信にエラーが発生しました。')
-				interaction.reply({ content: `<@${requestId}>の申請を却下しました。\nが、DMでメッセージを送れませんでした。\n別途対応してください。`, ephemeral: true});
-			}
+			// interaction.reply({ content: `<@${requestId}>の申請を却下しました`, ephemeral: true});
 		}
 	}
 });
-
 client.login(process.env.BOT_TOKEN);
