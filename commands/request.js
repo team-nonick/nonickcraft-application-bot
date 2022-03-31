@@ -1,7 +1,7 @@
 // リクエストコマンド
 // エディションとMCIDを取得させ、申請を申請側とMODチャンネル側に送信する。
 
-const { SlashCommandBuilder, channelMention } = require('@discordjs/builders');
+const { SlashCommandBuilder } = require('@discordjs/builders');
 const { MessageEmbed, MessageActionRow, MessageButton } = require('discord.js');
 const { requestCh, modCh } = require('../config.json');
 
