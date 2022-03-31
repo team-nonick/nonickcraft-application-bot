@@ -38,10 +38,10 @@ npm install discord.js @discordjs/builders @discordjs/rest discord-api-types dot
     "serverName": "Minecraftのサーバー名",
     "clientId": "DiscordBOTのクライアントID",
     "guildId": "スラッシュコマンドを登録するサーバーID",
-    "playerrole": "/request を承認した人に与えるロール",
-    "modCh": "モデレーターチャンネル",
-    "requestCh": "/request の使用を許可するチャンネル",
-    "beplayerprefix": "GeyserMCでBEプレイヤーに設定している接頭辞"
+    "playerrole": "/request を承認した人に与えるロールID",
+    "modCh": "モデレーターチャンネルのID",
+    "requestCh": "/request の使用を許可するチャンネルのID",
+    "beplayerprefix": "GeyserMCでBEプレイヤーに設定している接頭辞(標準では.)"
 }
 ```
 同じく新規作成した`.env` にはDiscordBOTのtokenを入力します。
@@ -61,4 +61,4 @@ node .\deploy-commands.js
 
 * このリポジトリのファイルはNoNICK's SERVER用に最適化されています。極力どのサーバーでも使えるようにプログラミングしていますが、自分のサーバー用にカスタマイズするには適時書き換えてください。
 * このプログラムは自由に使って構いませんが、商用利用はやめてください。
-* mainブランチカスタマイズしたDiscordBOTの動作不良に関しては問い合わせても対応できかねます。
+* カスタマイズしたDiscordBOTの動作不良に関しては問い合わせても対応できかねます。
