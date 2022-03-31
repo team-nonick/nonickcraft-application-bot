@@ -34,10 +34,10 @@ npm install discord.js @discordjs/builders @discordjs/rest discord-api-types dot
     "serverName": "Minecraftのサーバー名",
     "clientId": "DiscordBOTのクライアントID",
     "guildId": "スラッシュコマンドを登録するサーバーID",
-    "playerrole": "/request を承認した人に与えるロール",
-    "modCh": "モデレーターチャンネル",
-    "requestCh": "/request の使用を許可するチャンネル",
-    "beplayerprefix": "GeyserMCでBEプレイヤーに設定している接頭辞"
+    "playerrole": "/request を承認した人に与えるロールID",
+    "modCh": "モデレーターチャンネルのID",
+    "requestCh": "/request の使用を許可するチャンネルのID",
+    "beplayerprefix": "GeyserMCでBEプレイヤーに設定している接頭辞(標準では.)"
 }
 ```
 同じく新規作成した`.env` にはDiscordBOTのtokenを入力します。
