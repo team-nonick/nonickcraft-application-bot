@@ -8,8 +8,11 @@ Discord.js v13に追加されたスラッシュコマンドやボタン等を積
 # Features
 
 * `/request` ... ホワイトリストに追加するための申請を送信することができます。指定したチャンネル以外では使用できず、使用すると申請情報がモデレーターチャンネルに転送されます。
-![picture 1](images/2869545b09517e0342b0c585727a2321e8ddb112f7cebf17c7e2301076822698.png)  
-![picture 2](images/940a03c4e3ff9064c28a5b2529f04a9986ac2c7de0ef29ea4b8de6c36388bdeb.png)  
+![picture 2](https://media.discordapp.net/attachments/958791423161954445/959084240211939388/2869545b09517e0342b0c585727a2321e8ddb112f7cebf17c7e2301076822698.png)  
+![picture 1](https://media.discordapp.net/attachments/958791423161954445/959084239977074778/940a03c4e3ff9064c28a5b2529f04a9986ac2c7de0ef29ea4b8de6c36388bdeb.png)  
+
+* `/help` ...　DiscordBOTでお馴染みのコマンド。使用できるコマンドの一覧とバージョンを表示できます。v12以前のhelpコマンドに慣れている方のためのコマンドです。
+![picture_3](https://media.discordapp.net/attachments/958791423161954445/959084124184903732/unknown.png)
 
 # Requirement
 このBOTの動作には以下のライブラリが必要です。
