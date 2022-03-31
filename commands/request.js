@@ -3,12 +3,12 @@
 
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const { MessageEmbed, MessageActionRow, MessageButton } = require('discord.js');
-const { requestCh, modCh } = require('../config.json');
+const { requestCh, modCh, serverName } = require('../config.json');
 
 module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('request')
-		.setDescription(`NoNICK's SERVERへの参加申請を送信します。`)
+		.setDescription(`${serverName}への参加申請を送信します。`)
 		.addStringOption(option =>
 			option.setName('edition')
 				.setDescription('Minecraftのエディションを指定してください。')
@@ -82,7 +82,7 @@ module.exports = {
 			const embed_error = new MessageEmbed()
 				.setColor('#E84136')
 				.setDescription(`<#${requestCh}>以外でこのコマンドを使うことはできません!`);
-			interaction.reply({ embeds: [embed_error], ephemeral: true });
+			interaction.reply({embeds: [embed_error], ephemeral: true});
 		}
 	},
 }; 
