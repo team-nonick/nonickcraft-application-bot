@@ -2,10 +2,9 @@
 // コマンド更新の際に一回だけ使用すること(複数回やっても意味がない)
 
 const fs = require('node:fs');
-const { SlashCommandBuilder } = require('@discordjs/builders');
 const { REST } = require('@discordjs/rest');
 const { Routes } = require('discord-api-types/v9');
-const { clientId, guildId, token } = require('./config.json');
+const { clientId, guildId, } = require('./config.json');
 require('dotenv').config();
 
 const commands = []
