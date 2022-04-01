@@ -1,6 +1,3 @@
-// index.js
-// token,guildId,clientId,modch,requestchはconfig.jsonに保存すること
-
 //Repl.itでホスティングをする場合は、このコードを有効化する必要がある
 /*
 "use strict";
@@ -8,18 +5,33 @@ const http = require('http');
 http.createServer(function(req, res) {
 	res.write("ready nouniku!!");
 	res.end();
-}).listen(8080); */
+}).listen(8080);
+*/
 
+// 簡易的なチェックツール
 const fs = require('node:fs');
+let checkerror = 0;
+if (!fs.existsSync('./config.json')) {
+	console.error('[DiscordBot-NoNickCraft]'+'\u001b[31m'+' config.json が見つかりませんでした。ファイルが存在するか、名前を間違えていないか確認してください。'+'\u001b[0m');
+	checkerror = checkerror ++;
+}
+if (!fs.existsSync('./.env')) {
+	console.error('[DiscordBot-NoNickCraft]'+'\u001b[31m'+' .env が見つかりませんでした。ファイルが存在するか、名前を間違えていないか確認してください。'+'\u001b[0m');
+	checkerror = checkerror ++;
+}
+if (error > 0) {
+	process.exit(-1);
+}
+
 const { Client, Collection, Intents, MessageEmbed, MessageActionRow, MessageSelectMenu } = require('discord.js');
-const { beplayerprefix, playerrole, serverName } = require('./config.json');
+const { beplayerprefix, playerrole, serverName, modCh } = require('./config.json');
 const reason = require('./reason.json');
 const client = new Client({ intents: [Intents.FLAGS.GUILDS] });
 require('dotenv').config();
 
 // ready nouniku!!()
 client.once('ready', () => {
-	console.log('DiscordBotが起動しました。');
+	console.log('[DiscordBot-NoNickCraft]'+'\u001b[32m'+' DiscordBotが起動しました。'+'\u001b[0m');
 	client.user.setActivity(`${serverName}`);
 });
 
@@ -41,7 +53,10 @@ client.on('interactionCreate', async interaction => {
 			await command.execute(interaction);
 		} catch (error) {
 			console.error(error);
-			await interaction.reply({content: 'コマンドの実行中にエラーが発生しました。開発者にご連絡ください。', ephemeral: true});
+			const embed = new MessageEmbed()
+				.setColor('#F61E2')
+				.setDescription('コマンドの実行中にエラーが発生しました、開発者にご連絡ください。')
+			await interaction.reply({embeds: [embed], ephemeral: true});
 		}
 	}
 	if (interaction.isButton()) {
