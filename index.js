@@ -19,7 +19,7 @@ if (!fs.existsSync('./.env')) {
 	console.error('[DiscordBot-NoNickCraft]'+'\u001b[31m'+' .env が見つかりませんでした。ファイルが存在するか、名前を間違えていないか確認してください。'+'\u001b[0m');
 	checkerror = checkerror ++;
 }
-if (error > 0) {
+if (checkerror > 0) {
 	process.exit(-1);
 }
 
