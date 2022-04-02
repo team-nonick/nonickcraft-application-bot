@@ -21,6 +21,8 @@ const { Client, Collection, Intents, MessageEmbed, MessageActionRow, MessageSele
 const { beplayerprefix, playerrole, serverName, modCh } = require('./config.json');
 const reason = require('./reason.json');
 const client = new Client({ intents: [Intents.FLAGS.GUILDS] });
+const Keyv = require('keyv');
+const keyv = new Keyv();
 require('dotenv').config();
 
 // ready nouniku!!()
@@ -28,6 +30,8 @@ client.once('ready', () => {
 	console.log('[DiscordBot-NoNickCraft]'+'\u001b[32m'+' DiscordBotが起動しました。'+'\u001b[0m');
 	client.user.setActivity(`${serverName}`);
 });
+
+keyv.on('error', err => console.error('Keyv connection error:', err));
 
 client.commands = new Collection();
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
