@@ -26,7 +26,7 @@ Discord.js v13に追加されたスラッシュコマンドやボタン等を積
 # Installation
 以下のコマンドをコンソールに入力することでライブラリをインストールできます。
 ```npm
-npm install discord.js @discordjs/builders @discordjs/rest discord-api-types dotenv
+npm i
 ```
 
 # Usage
