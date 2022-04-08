@@ -1,4 +1,5 @@
 //Repl.itでホスティングをする場合は、このコードを有効化する必要がある
+
 /*
 "use strict";
 const http = require('http');
@@ -10,23 +11,19 @@ http.createServer(function(req, res) {
 
 // 簡易的なチェックツール
 const fs = require('node:fs');
-let checkerror = 0;
 if (!fs.existsSync('./config.json')) {
-	console.error('[DiscordBot-NoNickCraft]'+'\u001b[31m'+' config.json が見つかりませんでした。ファイルが存在するか、名前を間違えていないか確認してください。'+'\u001b[0m');
-	checkerror = checkerror ++;
+	console.error('[DiscordBot-NoNickCraft]'+'\u001b[31m'+'警告 config.json が見つかりませんでした。BOTが正しく動作しない可能性があります。ファイルが存在するか、名前を間違えていないか確認してください。'+'\u001b[0m');
 }
 if (!fs.existsSync('./.env')) {
-	console.error('[DiscordBot-NoNickCraft]'+'\u001b[31m'+' .env が見つかりませんでした。ファイルが存在するか、名前を間違えていないか確認してください。'+'\u001b[0m');
-	checkerror = checkerror ++;
-}
-if (checkerror > 0) {
-	process.exit(-1);
+	console.error('[DiscordBot-NoNickCraft]'+'\u001b[31m'+'警告 .env が見つかりませんでした。BOTが正しく動作しない可能性があります。ファイルが存在するか、名前を間違えていないか確認してください。'+'\u001b[0m');
 }
 
 const { Client, Collection, Intents, MessageEmbed, MessageActionRow, MessageSelectMenu } = require('discord.js');
 const { beplayerprefix, playerrole, serverName, modCh } = require('./config.json');
 const reason = require('./reason.json');
 const client = new Client({ intents: [Intents.FLAGS.GUILDS] });
+const Keyv = require('keyv');
+const keyv = new Keyv();
 require('dotenv').config();
 
 // ready nouniku!!()
@@ -34,6 +31,8 @@ client.once('ready', () => {
 	console.log('[DiscordBot-NoNickCraft]'+'\u001b[32m'+' DiscordBotが起動しました。'+'\u001b[0m');
 	client.user.setActivity(`${serverName}`);
 });
+
+keyv.on('error', err => console.error('Keyv connection error:', err));
 
 client.commands = new Collection();
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
@@ -101,7 +100,7 @@ client.on('interactionCreate', async interaction => {
 				 .setImage('https://cdn.discordapp.com/attachments/958791423161954445/958791575515824178/info.png');
 			beforeembed.edit({embeds: [afterembed], components: []});
 			member.roles.add(playerrole);
-			user.send({embeds: [dm]}).catch(error => {
+			member.user.send({embeds: [dm]}).catch(error => {
 				interaction.reply(`<@${requestId}>の申請を許可しましたが、DMが送信できませんでした。\n別途DM対応をお願いします。`)
 			}) 
 		}
@@ -190,13 +189,10 @@ client.on('interactionCreate', async interaction => {
 				.setImage('https://cdn.discordapp.com/attachments/958791423161954445/958791518225854614/2022-01-26_11.png')
 			
 			message.edit({embeds: [afterembed] , components: []});
-			console.log('埋め込みの編集を完了しました。')
 			user.send({embeds: [dm]}).catch(error => {
 				interaction.guild.channels.cache.get(modCh).send(`<@${requestId}>の申請を拒否しましたが、DMが送信できませんでした。\n別途DM対応をお願いします。`);
 			}) 
-			console.log('DMへメッセージを送信 / 送信できなかった場合に勧告をしました。')
 			interaction.reply({content: `<@${requestId}>の申請を拒否しました。`, ephemeral: true});
-			console.log('返信をしました。')
 		}
 	}
 });
