@@ -20,10 +20,9 @@ if (!fs.existsSync('./.env')) {
 
 const { Client, Collection, Intents, MessageEmbed, MessageActionRow, MessageSelectMenu } = require('discord.js');
 const { beplayerprefix, playerrole, serverName, modCh } = require('./config.json');
+const discordModals = require('discord-modals');
 const reason = require('./reason.json');
 const client = new Client({ intents: [Intents.FLAGS.GUILDS] });
-const Keyv = require('keyv');
-const keyv = new Keyv();
 require('dotenv').config();
 
 // ready nouniku!!()
