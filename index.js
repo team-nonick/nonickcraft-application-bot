@@ -20,9 +20,11 @@ if (!fs.existsSync('./.env')) {
 
 const { Client, Collection, Intents, MessageEmbed, MessageActionRow, MessageSelectMenu } = require('discord.js');
 const { beplayerprefix, playerrole, serverName, modCh } = require('./config.json');
-const discordModals = require('discord-modals');
+const discordModals = require('discord-modals')
 const reason = require('./reason.json');
 const client = new Client({ intents: [Intents.FLAGS.GUILDS] });
+
+discordModals(client);
 require('dotenv').config();
 
 // ready nouniku!!()
@@ -30,8 +32,6 @@ client.once('ready', () => {
 	console.log('[DiscordBot-NoNickCraft]'+'\u001b[32m'+' DiscordBotが起動しました。'+'\u001b[0m');
 	client.user.setActivity(`${serverName}`);
 });
-
-keyv.on('error', err => console.error('Keyv connection error:', err));
 
 client.commands = new Collection();
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
@@ -48,7 +48,7 @@ client.on('interactionCreate', async interaction => {
 		if (!command) return;
 
 		try {
-			await command.execute(interaction);
+			await command.execute(interaction,client);
 		} catch (error) {
 			console.error(error);
 			const embed = new MessageEmbed()
