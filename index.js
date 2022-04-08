@@ -28,11 +28,8 @@ const { beplayerprefix, playerrole, serverName, modCh } = require('./config.json
 const discordModals = require('discord-modals')
 const reason = require('./reason.json');
 const client = new Client({ intents: [Intents.FLAGS.GUILDS] });
-<<<<<<< HEAD
 
 discordModals(client);
-=======
->>>>>>> parent of 1bc6f3c (index.jsの更新)
 require('dotenv').config();
 
 // ready nouniku!!()
