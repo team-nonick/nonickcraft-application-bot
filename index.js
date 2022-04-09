@@ -197,9 +197,10 @@ client.on('interactionCreate', async interaction => {
 });
 
 // modalsテスト
+// この機能はBeta版で、機能が増えたり書き方が変わったりする可能性があります
 client.on('modalSubmit', async (modal) => {
-	if(modal.customId === 'customid'){
-	const firstResponse = modal.getTextInputValue('textinput-customid1') //Modalから取得したMCID
+	if(modal.customId === 'requestmodals'){
+	const firstResponse = modal.getTextInputValue('textinput-mcid') //Modalから取得したMCID
 	const userAvater = modal.user.avatarURL(); //avaterURL
 	const embed = new MessageEmbed()
 		.setColor(`#5662F6`)
