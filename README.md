@@ -20,16 +20,17 @@ Discord.js v13に追加されたスラッシュコマンドやボタン等を積
 # Requirement
 このBOTの動作には以下のライブラリが必要です。
 
-* discord.js 13.6.0
-* @discordjs/builders 0.12.0
-* @discordjs/rest 0.3.0
-* discord-api-types 0.30.0
-* dotenv 16.0.0
+* discord.js@13.6.0
+* @discordjs/builders@0.12.0
+* @discordjs/rest@0.3.0
+* discord-api-types@0.30.0
+* dotenv@16.0.0
+* discord-modals@1.3.5 (使用はしていません)
 
 # Installation
 以下のコマンドをコンソールに入力することでライブラリをインストールできます。
 ```npm
-npm install discord.js @discordjs/builders @discordjs/rest discord-api-types dotenv
+npm i
 ```
 
 # Usage
