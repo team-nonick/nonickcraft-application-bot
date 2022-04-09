@@ -199,8 +199,17 @@ client.on('interactionCreate', async interaction => {
 // modalsテスト
 client.on('modalSubmit', async (modal) => {
 	if(modal.customId === 'customid'){
-	//   const firstResponse = modal.getTextInputValue('textinput-customid1')
-	  modal.reply({'Congrats! Powered by discord-modals.'})
+	const firstResponse = modal.getTextInputValue('textinput-customid1') //Modalから取得したMCID
+	const userAvater = modal.user.avatarURL(); //avaterURL
+	const embed = new MessageEmbed()
+		.setColor(`#5662F6`)
+		.setTitle('申請完了')
+		.setThumbnail(userAvater)
+		.setDescription(`以下の情報で申請を送信しました。\n**Tips:**登録には時間がかかる場合があります。\n__正しく申請を受け取るには、DMを開放しておいてください!__`)
+		.addFields(	
+			{name: 'MCID', value: `${firstResponse}`, inline: true}
+		);
+	modal.reply({ embeds: [embed] });
 	}  
 });
 
