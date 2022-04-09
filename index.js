@@ -10,17 +10,11 @@ http.createServer(function(req, res) {
 
 // 簡易的なチェックツール
 const fs = require('node:fs');
-let checkerror = 0;
 if (!fs.existsSync('./config.json')) {
 	console.error('[DiscordBot-NoNickCraft]'+'\u001b[31m'+' config.json が見つかりませんでした。ファイルが存在するか、名前を間違えていないか確認してください。'+'\u001b[0m');
-	checkerror = checkerror ++;
 }
 if (!fs.existsSync('./.env')) {
 	console.error('[DiscordBot-NoNickCraft]'+'\u001b[31m'+' .env が見つかりませんでした。ファイルが存在するか、名前を間違えていないか確認してください。'+'\u001b[0m');
-	checkerror = checkerror ++;
-}
-if (checkerror > 0) {
-	process.exit(-1);
 }
 
 const { Client, Collection, Intents, MessageEmbed, MessageActionRow, MessageSelectMenu } = require('discord.js');
