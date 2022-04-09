@@ -195,4 +195,13 @@ client.on('interactionCreate', async interaction => {
 		}
 	}
 });
+
+// modalsテスト
+client.on('modalSubmit', async (modal) => {
+	if(modal.customId === 'customid'){
+	//   const firstResponse = modal.getTextInputValue('textinput-customid1')
+	  modal.reply({'Congrats! Powered by discord-modals.'})
+	}  
+});
+
 client.login(process.env.BOT_TOKEN);
