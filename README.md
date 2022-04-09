@@ -45,7 +45,7 @@ npm i
     "modCh": "モデレーターチャンネルのID",
     "requestCh": "/request の使用を許可するチャンネルのID",
     "beplayerprefix": "GeyserMCでBEプレイヤーに設定している接頭辞(標準では.)"
-    "enable_Request": true //(falseにすることで申請コマンドの使用を使えないようにする)
+    "enable_Request": true //(falseにすることで申請コマンドを使えないようにする)
 }
 ```
 同じく新規作成した`.env` にはDiscordBOTのtokenを入力します。
