@@ -1,3 +1,6 @@
+// ヘルプコマンド
+// v12のヘルプコマンドに慣れた人のためのコマンド
+
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const { MessageEmbed } = require('discord.js');
 const { serverName, botName } = require('../config.json');
@@ -16,7 +19,7 @@ module.exports = {
                 {name: '/help', value: '自身が使用可能なコマンドを確認します。'},
                 {name: '/request', value: `${serverName}への参加申請を送ります。`}
             )
-            .setFooter({text: `v1.12.2`});
+            .setFooter({text: `v1.12.3`});
         interaction.reply({embeds: [embed],  ephemeral: true});
 	},
 };
