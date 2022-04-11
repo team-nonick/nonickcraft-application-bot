@@ -72,9 +72,9 @@ client.on('interactionCreate', async interaction => {
 			const embed_string3 = embed[2].value; //申請者のmcid
 			const user_member = await interaction.guild.members.fetch(embed_string1); //ロール付与用に申請者のidを元にしたguildmemberを取得
 			const user_op_id = interaction.user.id; //ボタン操作をした人のidを取得
-			const embed_0 = interaction.message; //interaction元のメッセージを取得
+			const embed0 = interaction.message; //interaction元のメッセージを取得
 
-			const embed_1 = new MessageEmbed() //interaction元の編集後の埋め込み
+			const embed1 = new MessageEmbed() //interaction元の編集後の埋め込み
 				.setColor('#64B383')
 				.setTitle('申請 - 許可済み')
 				.addFields(
@@ -83,25 +83,25 @@ client.on('interactionCreate', async interaction => {
 					{name: '申請を対応した人', value: `<@${user_op_id}>`}
 				);
 
-			const embed_2 = new MessageEmbed() //申請者へ送るDM
+			const embed2 = new MessageEmbed() //申請者へ送るDM
 				 .setColor('#6B86D1')
 				 .setTitle(`${serverName}へようこそ!`)
 				 .setDescription(`こんにちは! ${serverName}への申請が承認され、サーバーに参加できるようになったことをお知らせします!\n早速サーバーに参加して楽しもう!\n**注意:このメッセージを受け取ってから12時間以内に参加しないと、もう一回申請が必要になります!**`)
 				 .addField(`申請が承認されたID`, `${embed_string3} (${embed_string2})`)
 				 .addField(`Tips`, `サーバーに関する質問は、このBOTに送っても対応できません! Discordサーバーの質問チャンネルや、のにクラchatなどで皆さんに質問しましょう!`)
 				 .setImage(request_allow_img);
-			embed_0.edit({embeds: [embed_1], components: []});
+			embed0.edit({embeds: [embed1], components: []});
 			user_member.roles.add(playerrole);
-			user_member.user.send({embeds: [embed_2]}).catch(error => {
+			user_member.user.send({embeds: [embed2]}).catch(error => {
 				interaction.reply(`<@${embed_string1}>の申請を許可しましたが、DMが送信できませんでした。\n別途DM対応をお願いします。`)
 			}) 
 		}
 
 		if (interaction.customId == "button1_3") {
 			//「拒否」ボタン
-			const embed = interaction.message.embeds?.[0]?.fields; //interaction元の埋め込みのフィールドを取得
-			if (!embed) return;
-			const select = new MessageActionRow() //セレクト作成
+			const embed0 = interaction.message.embeds?.[0]?.fields; //interaction元の埋め込みのフィールドを取得
+			if (!embed0) return;
+			const select1 = new MessageActionRow() //セレクト作成
 				.addComponents(
 					new MessageSelectMenu()
 						.setCustomId('reason_select')
@@ -136,15 +136,15 @@ client.on('interactionCreate', async interaction => {
 							}
 						]),
 				);
-			const copy_embed = new MessageEmbed() //interaction元の編集後の埋め込み
+			const embed1 = new MessageEmbed() //interaction元の編集後の埋め込み
 					.setTitle(`元のメッセージ`)
 					.addFields(
-						{name: 'ユーザーID', value: `${embed[0].value}`},
-						{name: 'エディション', value: `${embed[1].value}`, inline: true},	
-						{name: 'MCID', value: `${embed[2].value}`, inline: true },
+						{name: 'ユーザーID', value: `${embed0[0].value}`},
+						{name: 'エディション', value: `${embed0[1].value}`, inline: true},	
+						{name: 'MCID', value: `${embed0[2].value}`, inline: true },
 						{name: '元のメッセージのID', value: `${interaction.message.id}`}
 					);
-			interaction.reply({ content: '申請を拒否する理由に最も当てはまるものを選択してください。', components: [select], embeds: [copy_embed] ,ephemeral: true });
+			interaction.reply({ content: '申請を拒否する理由に最も当てはまるものを選択してください。', components: [select1], embeds: [embed1] ,ephemeral: true });
 		}
 	}
 
