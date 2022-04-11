@@ -39,13 +39,18 @@ npm i
 ```json
 {
     "serverName": "Minecraftのサーバー名",
+    "botName": "BOTの名前",
     "clientId": "DiscordBOTのクライアントID",
     "guildId": "スラッシュコマンドを登録するサーバーID",
-    "playerrole": "/request を承認した人に与えるロールID",
-    "modCh": "モデレーターチャンネルのID",
-    "requestCh": "/request の使用を許可するチャンネルのID",
-    "beplayerprefix": "GeyserMCでBEプレイヤーに設定している接頭辞(標準では.)"
-    "enable_Request": true //(falseにすることで申請コマンドを使えないようにする)
+
+    "enable_Request": true, //falseにすると申請の受付を停止する
+    "playerrole": "/request を承認した人に与えるロール",
+    "modCh": "モデレーターチャンネル",
+    "requestCh": "/request の使用を許可するチャンネル",
+    "beplayerprefix": "GeyserMCでBEプレイヤーに設定している接頭辞",
+    
+    "request_allow_img": "申請承認時にDMに送信する画像のURL",
+    "request_forbid_img": "申請拒否時にDMに送信する画像のURL"
 }
 ```
 同じく新規作成した`.env` にはDiscordBOTのtokenを入力します。
