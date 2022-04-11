@@ -23,73 +23,74 @@ module.exports = {
 		),
 
 	async execute(interaction) {
-		const edition = interaction.options.getString('edition'); //コマンドを打った人のmcid
-		const mcid = interaction.options.getString('mcid'); //コマンドを打った人のmcid
-		const userId = interaction.user.id; //コマンドを打った人のid
-		const userAvater = interaction.user.avatarURL(); //コマンドを打った人のアバターURL
-		const sendCh = interaction.channelId //コマンドを発動したチャンネル
+		const command_string1 = interaction.options.getString('edition'); //コマンドを打った人のmcid
+		const command_string2 = interaction.options.getString('mcid'); //コマンドを打った人のmcid
+		const command_channel1 = interaction.channelId //コマンドを発動したチャンネル
+		const user_id1 = interaction.user.id; //コマンドを打った人のid
+		const user_avater1 = interaction.user.avatarURL(); //コマンドを打った人のアバターURL
 
-		if (enable_Request) {
-			if (sendCh === requestCh) {
-				// 申請側にメッセージを送信
-				const embed = new MessageEmbed()
-					.setColor(`#5662F6`)
-					.setTitle('申請完了')
-					.setThumbnail(userAvater)
-					.setDescription(`以下の情報で申請を送信しました。\n**Tips:**登録には時間がかかる場合があります。\n__正しく申請を受け取るには、DMを開放しておいてください!__`)
-					.addFields(
-						{name: 'エディション', value: `${edition}版`, inline: true},	
-						{name: 'MCID', value: `${mcid}`, inline: true}
-					);
-				interaction.reply({ embeds: [embed] });
-
-				// MODチャンネル側に申請対応メッセージを送信
-				//↑につけるボタンボタン
-				const buttons = new MessageActionRow()
-					.addComponents(
-						new MessageButton()
-						.setCustomId('button_copy')
-						.setLabel('コマンドをコピー')
-						.setEmoji('📃')
-						.setStyle('PRIMARY'),
-					)
-					.addComponents(
-						new MessageButton()
-						.setCustomId('button_ok')
-						.setLabel('許可')
-						.setStyle('SUCCESS'),
-					)
-					.addComponents(
-						new MessageButton()
-						.setCustomId('button_ng')
-						.setLabel('拒否')
-						.setStyle('DANGER'),
-					);
-				
-				//埋め込み
-				const embed_mod = new MessageEmbed()
-					.setColor('#56B482')
-					.setTitle('申請 - 新しい申請が送信されました!')
-					.setDescription(`申請者:<@${userId}>`)
-					.setThumbnail(userAvater)
-					.addFields(
-						{name: 'ユーザーID', value: `${userId}` },
-						{name: 'エディション', value: `${edition}版`, inline: true},	
-						{name: 'MCID', value: `${mcid}`, inline: true}
-					);
-				await interaction.guild.channels.cache.get(modCh).send({ embeds: [embed_mod], components: [buttons] });
-			} else {
-				// もし申請チャンネル以外で送っていた場合にエラーを表示
-				const embed_error = new MessageEmbed()
-					.setColor('#E84136')
-					.setDescription(`<#${requestCh}>以外でこのコマンドを使うことはできません!`);
-				interaction.reply({embeds: [embed_error], ephemeral: true});
-			}
-		} else {
-			const embed_not = new MessageEmbed()
-				.setColor('#E84136')
-				.setDescription(`只今、申請は受付を停止しています。`);
-			interaction.reply({embeds: [embed_not], ephemeral: true});
+		// もし申請チャンネル以外で送っていた場合にエラーを表示
+		if (!(command_channel1 === requestCh)) {
+			const embed = new MessageEmbed()
+			.setColor('#E84136')
+			.setDescription(`<#${requestCh}>以外でこのコマンドを使うことはできません!`);
+			interaction.reply({embeds: [embed], ephemeral: true});
+			return;
 		}
+
+		// 申請の受付を停止していたらメッセージを返す
+		if (!enable_Request) {
+			const embed = new MessageEmbed()
+			.setColor('#E84136')
+			.setDescription(`只今、申請は受付を停止しています。`);
+			interaction.reply({embeds: [embed], ephemeral: true});
+			return;
+		}
+
+		// 申請側にメッセージを送信
+		const embed1 = new MessageEmbed()
+			.setColor(`#5662F6`)
+			.setTitle('申請完了')
+			.setThumbnail(user_avater1)
+			.setDescription(`以下の情報で申請を送信しました。\n**Tips:**登録には時間がかかる場合があります。\n__正しく申請を受け取るには、DMを開放しておいてください!__`)
+			.addFields(
+				{name: 'エディション', value: `${command_string1}版`, inline: true},	
+				{name: 'MCID', value: `${command_string2}`, inline: true}
+			);
+			interaction.reply({ embeds: [embed1] });
+
+		// モデレーター用メッセージ
+		const button = new MessageActionRow()
+			.addComponents(
+			new MessageButton()
+				.setCustomId('button_copy')
+				.setLabel('コマンドをコピー')
+					.setEmoji('📃')
+					.setStyle('PRIMARY'),
+				)
+				.addComponents(
+				new MessageButton()
+					.setCustomId('button_ok')
+					.setLabel('許可')
+					.setStyle('SUCCESS'),
+					)
+				.addComponents(
+				new MessageButton()
+					.setCustomId('button_ng')
+					.setLabel('拒否')
+					.setStyle('DANGER'),
+				);
+
+		const embed2 = new MessageEmbed()
+			.setColor('#56B482')
+			.setTitle('申請 - 新しい申請が送信されました!')
+			.setDescription(`申請者:<@${user_id1}>`)
+			.setThumbnail(user_avater1)
+			.addFields(
+				{name: 'ユーザーID', value: `${user_id1}` },
+				{name: 'エディション', value: `${command_string1}版`, inline: true},	
+				{name: 'MCID', value: `${command_string2}`, inline: true}
+				);
+		await interaction.guild.channels.cache.get(modCh).send({ embeds: [embed2], components: [button] });
 	},
 }; 
