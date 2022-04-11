@@ -12,9 +12,6 @@ if (!fs.existsSync('./.env')) {
 	console.error('[DiscordBot-NoNickCraft]'+'\u001b[31m'+' .env が見つかりませんでした。ファイルが存在するか、名前を間違えていないか確認してください。'+'\u001b[0m');
 	checkerror = checkerror ++;
 }
-if (checkerror > 0) {
-	process.exit(-1);
-}
 
 const { REST } = require('@discordjs/rest');
 const { Routes } = require('discord-api-types/v9');
