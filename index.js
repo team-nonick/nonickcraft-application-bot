@@ -92,14 +92,13 @@ client.on('interactionCreate', async interaction => {
 				 .setImage(request_allow_img);
 			embed_0.edit({embeds: [embed_1], components: []});
 			user_member.roles.add(playerrole);
-			// user_member.user.send({embeds: [embed_2]}).catch(error => {
+			user_member.user.send({embeds: [embed_2]}).catch(error => {
 				interaction.reply(`<@${embed_string1}>の申請を許可しましたが、DMが送信できませんでした。\n別途DM対応をお願いします。`)
-			// }) 
+			}) 
 		}
 
 		if (interaction.customId == "button1_3") {
 			//「拒否」ボタン
-			// 埋め込みから申請者の情報を取得
 			const embed = interaction.message.embeds?.[0]?.fields; //interaction元の埋め込みのフィールドを取得
 			if (!embed) return;
 			const select = new MessageActionRow() //セレクト作成
