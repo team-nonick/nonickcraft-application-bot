@@ -11,7 +11,7 @@ http.createServer(function(req, res) {
 
 const fs = require('node:fs');
 const { Client, Collection, Intents, MessageEmbed, MessageActionRow, MessageSelectMenu } = require('discord.js');
-const { beplayerprefix, playerrole, serverName, modCh } = require('./config.json');
+const { beplayerprefix, playerrole, serverName, modCh, request_allow_img } = require('./config.json');
 const discordModals = require('discord-modals');
 const reason = require('./reason.json');
 const client = new Client({ intents: [Intents.FLAGS.GUILDS] });
@@ -51,7 +51,7 @@ client.on('interactionCreate', async interaction => {
 	}
 
 	if (interaction.isButton()) {
-		if (interaction.customId == "button_copy") {
+		if (interaction.customId == "button1_1") {
 			// 「コマンドをコピー」ボタン
 			const embed = interaction.message.embeds?.[0]?.fields; //interaction元の埋め込みのフィールドを取得
 			if (!embed) return;
@@ -63,39 +63,41 @@ client.on('interactionCreate', async interaction => {
 			interaction.reply({content: `/whitelist add ${embed_string2}`, ephemeral: true});
 		}
 
-		if (interaction.customId == "button_ok") {
+		if (interaction.customId == "button1_2") {
 			// 「許可」ボタン
 			const embed = interaction.message.embeds?.[0]?.fields; //interaction元の埋め込みのフィールドを取得
 			if (!embed) return;
-			const requestId = embed[0].value; //申請者のid
-			const edition = embed[1].value; //申請者のエディション
-			const mcid = embed[2].value; //申請者のmcid
-			const member = await interaction.guild.members.fetch(requestId); //ロール付与用に申請者のidを元にしたguildmemberを取得
-			const beforeembed = interaction.message; //interaction元のメッセージを取得
-			const clickuserId = interaction.user.id; //ボタン操作をした人のidを取得
-			const afterembed = new MessageEmbed() //interaction元の編集後の埋め込み
+			const embed_string1 = embed[0].value; //申請者のid
+			const embed_string2 = embed[1].value; //申請者のエディション
+			const embed_string3 = embed[2].value; //申請者のmcid
+			const user_member = await interaction.guild.members.fetch(embed_string1); //ロール付与用に申請者のidを元にしたguildmemberを取得
+			const user_op_id = interaction.user.id; //ボタン操作をした人のidを取得
+			const embed_0 = interaction.message; //interaction元のメッセージを取得
+
+			const embed_1 = new MessageEmbed() //interaction元の編集後の埋め込み
 				.setColor('#64B383')
 				.setTitle('申請 - 許可済み')
 				.addFields(
-					{name: '申請者', value: `<@${requestId}>`, inline: true},
-					{name: 'MCID', value: `${mcid} (${edition})`, inline: true},	
-					{name: '申請を対応した人', value: `<@${clickuserId}>`}
+					{name: '申請者', value: `<@${embed_string1}>`, inline: true},
+					{name: 'MCID', value: `${embed_string3} (${embed_string2})`, inline: true},	
+					{name: '申請を対応した人', value: `<@${user_op_id}>`}
 				);
-			const dm = new MessageEmbed() //申請者へ送るDM
+
+			const embed_2 = new MessageEmbed() //申請者へ送るDM
 				 .setColor('#6B86D1')
 				 .setTitle(`${serverName}へようこそ!`)
 				 .setDescription(`こんにちは! ${serverName}への申請が承認され、サーバーに参加できるようになったことをお知らせします!\n早速サーバーに参加して楽しもう!\n**注意:このメッセージを受け取ってから12時間以内に参加しないと、もう一回申請が必要になります!**`)
-				 .addField(`申請が承認されたID`, `${mcid} (${edition})`)
+				 .addField(`申請が承認されたID`, `${embed_string3} (${embed_string2})`)
 				 .addField(`Tips`, `サーバーに関する質問は、このBOTに送っても対応できません! Discordサーバーの質問チャンネルや、のにクラchatなどで皆さんに質問しましょう!`)
-				 .setImage('https://cdn.discordapp.com/attachments/958791423161954445/958791575515824178/info.png');
-			beforeembed.edit({embeds: [afterembed], components: []});
-			member.roles.add(playerrole);
-			member.user.send({embeds: [dm]}).catch(error => {
-				interaction.reply(`<@${requestId}>の申請を許可しましたが、DMが送信できませんでした。\n別途DM対応をお願いします。`)
-			}) 
+				 .setImage(request_allow_img);
+			embed_0.edit({embeds: [embed_1], components: []});
+			user_member.roles.add(playerrole);
+			// user_member.user.send({embeds: [embed_2]}).catch(error => {
+				interaction.reply(`<@${embed_string1}>の申請を許可しましたが、DMが送信できませんでした。\n別途DM対応をお願いします。`)
+			// }) 
 		}
 
-		if (interaction.customId == "button_ng") {
+		if (interaction.customId == "button1_3") {
 			//「拒否」ボタン
 			// 埋め込みから申請者の情報を取得
 			const embed = interaction.message.embeds?.[0]?.fields; //interaction元の埋め込みのフィールドを取得

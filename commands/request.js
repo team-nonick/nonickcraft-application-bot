@@ -60,23 +60,23 @@ module.exports = {
 			interaction.reply({ embeds: [embed1] });
 
 		// モデレーター用メッセージ
-		const button = new MessageActionRow()
+		const button1 = new MessageActionRow()
 			.addComponents(
 			new MessageButton()
-				.setCustomId('button_copy')
+				.setCustomId('button1_1')
 				.setLabel('コマンドをコピー')
 					.setEmoji('📃')
 					.setStyle('PRIMARY'),
 				)
 				.addComponents(
 				new MessageButton()
-					.setCustomId('button_ok')
+					.setCustomId('button1_2')
 					.setLabel('許可')
 					.setStyle('SUCCESS'),
 					)
 				.addComponents(
 				new MessageButton()
-					.setCustomId('button_ng')
+					.setCustomId('button1_3')
 					.setLabel('拒否')
 					.setStyle('DANGER'),
 				);
@@ -91,6 +91,6 @@ module.exports = {
 				{name: 'エディション', value: `${command_string1}版`, inline: true},	
 				{name: 'MCID', value: `${command_string2}`, inline: true}
 			);
-		await interaction.guild.channels.cache.get(modCh).send({ embeds: [embed2], components: [button] });
+		await interaction.guild.channels.cache.get(modCh).send({ embeds: [embed2], components: [button1] });
 	},
 }; 
