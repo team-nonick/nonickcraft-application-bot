@@ -49,19 +49,18 @@ client.on('interactionCreate', async interaction => {
 			await interaction.reply({embeds: [embed], ephemeral: true});
 		}
 	}
+
 	if (interaction.isButton()) {
-		// もしinteractionの中でボタン操作があったら
 		if (interaction.customId == "button_copy") {
 			// 「コマンドをコピー」ボタン
 			const embed = interaction.message.embeds?.[0]?.fields; //interaction元の埋め込みのフィールドを取得
 			if (!embed) return;
-			const edition = embed[1].value; //申請者のエディション
-			const mcid = embed[2].value; //申請者のmcid
-			if (edition == "BE版") {
-				interaction.reply({content: `/whitelist add ${beplayerprefix}${mcid}`, ephemeral: true});
-			} else {
-				interaction.reply({content: `/whitelist add ${mcid}`, ephemeral: true});
+			const embed_string1 = embed[1].value; //申請者のエディション
+			let embed_string2 = embed[2].value; //申請者のmcid
+			if (embed_string1 == "BE版") {
+				embed_string2 = beplayerprefix + embed_string2.replace(/\s+/g,'_');
 			}
+			interaction.reply({content: `/whitelist add ${embed_string2}`, ephemeral: true});
 		}
 
 		if (interaction.customId == "button_ok") {

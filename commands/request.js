@@ -90,7 +90,7 @@ module.exports = {
 				{name: 'ユーザーID', value: `${user_id1}` },
 				{name: 'エディション', value: `${command_string1}版`, inline: true},	
 				{name: 'MCID', value: `${command_string2}`, inline: true}
-				);
+			);
 		await interaction.guild.channels.cache.get(modCh).send({ embeds: [embed2], components: [button] });
 	},
 }; 
