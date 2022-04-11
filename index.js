@@ -9,15 +9,7 @@ http.createServer(function(req, res) {
 }).listen(8080);
 */
 
-// 簡易的なチェックツール
 const fs = require('node:fs');
-if (!fs.existsSync('./config.json')) {
-	console.error('[DiscordBot-NoNickCraft]'+'\u001b[31m'+'警告 config.json が見つかりませんでした。BOTが正しく動作しない可能性があります。ファイルが存在するか、名前を間違えていないか確認してください。'+'\u001b[0m');
-}
-if (!fs.existsSync('./.env')) {
-	console.error('[DiscordBot-NoNickCraft]'+'\u001b[31m'+'警告 .env が見つかりませんでした。BOTが正しく動作しない可能性があります。ファイルが存在するか、名前を間違えていないか確認してください。'+'\u001b[0m');
-}
-
 const { Client, Collection, Intents, MessageEmbed, MessageActionRow, MessageSelectMenu } = require('discord.js');
 const { beplayerprefix, playerrole, serverName, modCh } = require('./config.json');
 const discordModals = require('discord-modals');
