@@ -1,17 +1,15 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
-const { MessageEmbed, MessageActionRow, MessageButton } = require('discord.js');
-const { requestCh, serverName } = require('../config.json');
+const { MessageEmbed } = require('discord.js');
+const { serverName, botName } = require('../config.json');
 
 module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('help')
 		.setDescription('自身が使用可能なコマンドを確認します。'),
 	async execute(interaction) {
-        // const botName = client.user.username;
-        // const botAvater = ;
         const userId = interaction.user.id; //コマンドを打った人のidを取得
         const embed = new MessageEmbed()
-            .setTitle(`NoNICK's SERVER bot`)
+            .setTitle(botName)
             .setColor('#FFFFFF')
             .setDescription(`**Minecraftサーバー運営のお手伝いをするBOT**\n<@${userId}>さん、こんにちは!\n以下から利用可能なコマンドを確認できます!`)
             .addFields(
