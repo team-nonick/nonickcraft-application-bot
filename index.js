@@ -195,3 +195,6 @@ client.on('interactionCreate', async interaction => {
 		}
 	}
 });
+
+// BOTにログイン
+client.login(process.env.BOT_TOKEN);
