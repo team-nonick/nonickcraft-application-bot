@@ -15,7 +15,7 @@ if (!fs.existsSync('./.env')) {
 
 const { REST } = require('@discordjs/rest');
 const { Routes } = require('discord-api-types/v9');
-const { clientId, guildId, } = require('./config.json');
+const { clientId, guildId } = require('./config.json');
 require('dotenv').config();
 
 const commands = []
